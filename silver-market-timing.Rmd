@@ -3,11 +3,6 @@ title: |
   | Silver Market Timing--
   | A Macroeconomic Perspective
 author: "Author: [Christian Satzky, FRM](https://www.linkedin.com/in/christian-satzky/)"
-#author: | 
-#  | Christian Satzky, FRM
-#  | [\faLinkedin](https://www.linkedin.com/in/christian-satzky/) [\faEnvelope](mailto:c.satzky@gmail.com)
-  
-#subtitle: "[\\faLinkedin](https://www.linkedin.com/in/christian-satzky/) [\\faEnvelope](mailto:c.satzky@gmail.com)"
 date: "Last update: `r ifelse(substr(format(Sys.time(), '%d'),1,1) == 0, substring(format(Sys.time(), '%d %B %Y'), 2), format(Sys.time(), '%d %B %Y'))`"
 output:
   pdf_document:
