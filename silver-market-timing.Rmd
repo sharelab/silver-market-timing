@@ -274,7 +274,7 @@ $$\mathbb{E}[0.2 \Delta i - 0.1 \Delta r - \Delta P_t] = 0$$
 
 This equation within the expectation can be used to construct a fundamental Silver spot price indicator. The rolling-time period, $\Delta$, can be arbitrarily chosen, e.g. 15 trading days (resembling 3 weeks). The daily indicator value is then computed as follows:^[Note that continuously compounded returns are additive]
 
-$$0.2 [i_t-i_{t-21}] - 0.1[r_t - r_{t-21}] - ln \left( \frac{P_t}{P_{t-21}} \right)$$
+$$0.2 [i_t-i_{t-15}] - 0.1[r_t - r_{t-15}] - ln \left( \frac{P_t}{P_{t-15}} \right)$$
 
 It might be convenient to think of the indicator's values in terms of simple compounding return. Hence the indicator can be transformed to reflect that:
 
