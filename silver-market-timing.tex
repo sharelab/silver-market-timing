@@ -95,7 +95,7 @@
 A Macroeconomic Perspective}
 \author{Author: \href{https://www.linkedin.com/in/christian-satzky/}{Christian
 Satzky, FRM}}
-\date{Last update: 28 April 2021}
+\date{Last update: 2 May 2021}
 
 \begin{document}
 \maketitle
@@ -134,11 +134,18 @@ The silver commodity (spot symbol: \texttt{\^{}XAGUSD}) can be thought
 of in terms of a zero-coupon paying bond with an infinite time to
 maturity. Assuming cashing-out within finite time, we are interested in
 the asset's spot price at the end of the arbitrary holding period,
-\(T\). The future selling price, \(P_T\), is a function of the spot
-price at the beginning of the investment period, \(P_0\), and USD
-inflation, \(i\).
+\(T\).
 
-\[P_{T} = f(P_{0}, i)\]
+In most simplistic terms, any physical asset appreciates/depreciates in
+nominal value with inflation/deflation. It follows that the future
+silver spot price, \(P_T\), is a function of the spot price at the
+beginning of the investment period, \(P_0\), and USD inflation, \(i\).
+In addition, there might be some \(n\) other dependencies, which might
+be observable or not, and where it is not clear whether they have a
+positive or negative impact on \(P_T\). These are included in the vector
+\(X_n\), \(X_n = [x_1, x_2,..., x_n]\).
+
+\[P_{T} = f(P_{0}, i, X_n)\]
 
 Assuming continuous-time, we can discount the future spot price,
 \(P_T\), to the current spot price, \(P_t\), using the risk-free USD
@@ -146,11 +153,12 @@ interest rate \(r\).\footnote{This implicitly assumes risk-neutrality,
   which further assumes an arbitrage-free market.}
 
 \begin{align}
-P_t = \frac{f(P_{0}, i)}{e^{r(T-t)}}
+P_t = \frac{f(P_{0}, i, X_n)}{e^{r(T-t)}}
 \end{align}
 
 For illustration purposes, let's assume that
-\(f(P_0, i) = P_0 e^{i(T-t)}\)
+\(f(P_0, i, X_n) = P_0 e^{i(T-t)}\), thereby setting the parameters for
+the vector of unknown variables \(X_n\) to zero.
 
 \[P_t = \frac{P_0 e^{i(T-t)}}{e^{r(T-t)}}\]
 
@@ -193,7 +201,7 @@ price, \(P_t\) is rising:
 \[\Delta s >0 \implies \Delta P_t > 0\]
 
 However, it is important to understand that we cannot make such claim.
-Remember that the exact form of \(f(P_0, i)\) in equation (1) is
+Remember that the exact form of \(f(P_0, i, X_n)\) in equation (1) is
 \emph{unknown}. Hence, we cannot infer that \(\Delta i\) and
 \(\Delta r\) have an \emph{equal} impact on \(P_t\). However, the exact
 impact can be estimated using data, which is done in the next section.
@@ -213,9 +221,10 @@ Rate by the Federal Reserve Bank of St.~Louis.\footnote{Federal Reserve
   \url{https://fred.stlouisfed.org/series/T5YIE}, April 9, 2021.} At
 each point in time, this rate represents the \emph{expected inflation}
 over the next 10 years. Hence, a \emph{change} in the Breakeven
-Inflation Rate can be interpreted as a change in expected inflation.
-This rate is derived from 10-year US Treasury bonds with and without
-inflation protection.
+Inflation Rate can be interpreted as a change in expected inflation,
+which is a stationary, \(I(0)\) time-series variable. This rate is
+derived from 10-year US Treasury bonds with and without inflation
+protection.
 
 When it comes to the risk-free rate, I am using 10-year US treasury bond
 rates, which are not indexed for inflation.\footnote{Board of Governors
@@ -248,6 +257,12 @@ $\epsilon_t$ & Error term, $E[\epsilon_t] = 0$\\
 \end{tabular}
 \end{footnotesize}
 
+Note that all variables \(\Delta P_t\), \(\Delta i_t\), and
+\(\Delta r_t\) are \emph{stationary}, \(I(0)\) time-series. Hence, the
+linear regression results below do not suffer from spurious regression,
+and t-values, \(R^2\), and \(\beta\) estimates are reliable and
+distributed as expected.
+
 \begin{table}[!h]
 
 \caption{\label{tab:lm-fit}Linear Regression Results}
@@ -264,8 +279,8 @@ $\Delta r_t$ & -0.1017 & 0.0165 & -6.1752 & <0.001\\
 \end{table}
 
 The linear regression model in (2) explains roughly 10\% of the total
-variation in the Silver spot price return. In terms of financial
-econometrics, this is a remarkably convincing result. Using the linear
+variation in the Silver spot price return. In terms of regression in
+differences, this is a remarkably convincing result. Using the linear
 regression output, we can use statistical theory to (in-)validate the
 \protect\hyperlink{silver-spot-pricing-hypothesis}{hypotheses} made in
 the previous section. For the \emph{true} value of \(\beta\), we are

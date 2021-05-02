@@ -95,17 +95,19 @@ All results are 100% reproducible. All data and code are available on my company
 
 # Silver Spot Pricing Hypothesis
 
-The silver commodity (spot symbol: `^XAGUSD`) can be thought of in terms of a zero-coupon paying bond with an infinite time to maturity. Assuming cashing-out within finite time, we are interested in the asset's spot price at the end of the arbitrary holding period, $T$. The future selling price, $P_T$, is a function of the spot price at the beginning of the investment period, $P_0$, and USD inflation, $i$.
+The silver commodity (spot symbol: `^XAGUSD`) can be thought of in terms of a zero-coupon paying bond with an infinite time to maturity. Assuming cashing-out within finite time, we are interested in the asset's spot price at the end of the arbitrary holding period, $T$. 
 
-$$P_{T} = f(P_{0}, i)$$
+In most simplistic terms, any physical asset appreciates/depreciates in nominal value with inflation/deflation. It follows that the future silver spot price, $P_T$, is a function of the spot price at the beginning of the investment period, $P_0$, and USD inflation, $i$. In addition, there might be some $n$ other dependencies, which might be observable or not, and where it is not clear whether they have a positive or negative impact on $P_T$. These are included in the vector $X_n$, $X_n = [x_1, x_2,..., x_n]$.
+
+$$P_{T} = f(P_{0}, i, X_n)$$
 
 Assuming continuous-time, we can discount the future spot price, $P_T$, to the current spot price, $P_t$, using the risk-free USD interest rate $r$.^[This implicitly assumes risk-neutrality, which further assumes an arbitrage-free market.]
 
 \begin{align}
-P_t = \frac{f(P_{0}, i)}{e^{r(T-t)}}
+P_t = \frac{f(P_{0}, i, X_n)}{e^{r(T-t)}}
 \end{align}
 
-For illustration purposes, let's assume that $f(P_0, i) = P_0 e^{i(T-t)}$
+For illustration purposes, let's assume that $f(P_0, i, X_n) = P_0 e^{i(T-t)}$, thereby setting the parameters for the vector of unknown variables $X_n$ to zero.
 
 $$P_t = \frac{P_0 e^{i(T-t)}}{e^{r(T-t)}}$$
 
@@ -133,13 +135,13 @@ Let's denote $s$ the _spread_ between USD inflation and the USD risk-free rate, 
 
 $$\Delta s >0 \implies \Delta P_t > 0$$
 
-However, it is important to understand that we cannot make such claim. Remember that the exact form of $f(P_0, i)$ in equation (1) is _unknown_. Hence, we cannot infer that $\Delta i$ and $\Delta r$ have an _equal_ impact on $P_t$. However, the exact impact can be estimated using data, which is done in the next section.
+However, it is important to understand that we cannot make such claim. Remember that the exact form of $f(P_0, i, X_n)$ in equation (1) is _unknown_. Hence, we cannot infer that $\Delta i$ and $\Delta r$ have an _equal_ impact on $P_t$. However, the exact impact can be estimated using data, which is done in the next section.
 
 # Empirical Validation
 
 In the following, I am empirically investigating the [silver spot pricing hypthesis][Silver Spot Pricing Hypothesis] from the previous section. Hence, it is necessary to find real-world proxies for USD inflation and USD risk-free rate.
 
-When it comes to inflation, I am using the 10-year Breakeven Inflation Rate by the Federal Reserve Bank of St. Louis.^[Federal Reserve Bank of St. Louis, 10-Year Breakeven Inflation Rate [T5YIE], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/T5YIE, April 9, 2021.] At each point in time, this rate represents the _expected inflation_ over the next 10 years. Hence, a _change_ in the Breakeven Inflation Rate can be interpreted as a change in expected inflation. This rate is derived from 10-year US Treasury bonds with and without inflation protection.
+When it comes to inflation, I am using the 10-year Breakeven Inflation Rate by the Federal Reserve Bank of St. Louis.^[Federal Reserve Bank of St. Louis, 10-Year Breakeven Inflation Rate [T5YIE], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/T5YIE, April 9, 2021.] At each point in time, this rate represents the _expected inflation_ over the next 10 years. Hence, a _change_ in the Breakeven Inflation Rate can be interpreted as a change in expected inflation, which is a stationary, $I(0)$ time-series variable. This rate is derived from 10-year US Treasury bonds with and without inflation protection.
 
 When it comes to the risk-free rate, I am using 10-year US treasury bond rates, which are not indexed for inflation.^[Board of Governors of the Federal Reserve System (US), 10-Year Treasury Constant Maturity Rate [DGS10], retrieved from FRED, Federal Reserve Bank of St. Louis; https://fred.stlouisfed.org/series/DGS10, April 9, 2021.]
 
@@ -166,6 +168,8 @@ kable(notation_capm, escape = FALSE, booktabs=TRUE, col.names = NULL) %>%
   sub("\\\\bottomrule", "", .)
 ```
 \end{footnotesize}
+
+Note that all variables $\Delta P_t$, $\Delta i_t$, and $\Delta r_t$ are _stationary_, $I(0)$ time-series. Hence, the linear regression results below do not suffer from spurious regression, and t-values, $R^2$, and $\beta$ estimates are reliable and distributed as expected.
 
 ```{r lm-fit}
 # load and wrangle XAG/USD dataset
@@ -230,7 +234,7 @@ h0_beta_geq_zero <- round(pt(coef(summary_result)[, 3], result$df, lower = TRUE)
 h0_beta_geq_zero[h0_beta_geq_zero=="0"] <- as.character("< 0.001")
 ```
 
-The linear regression model in (2) explains roughly 10% of the total variation in the Silver spot price return. In terms of financial econometrics, this is a remarkably convincing result. Using the linear regression output, we can use statistical theory to (in-)validate the [hypotheses][Silver Spot Pricing Hypothesis] made in the previous section. For the _true_ value of $\beta$, we are interested whether $\beta^{_i} > 0$ and $\beta^{_r} < 0$. These one-sided Frequentist hypothesis tests are carried out below.
+The linear regression model in (2) explains roughly 10% of the total variation in the Silver spot price return. In terms of regression in differences, this is a remarkably convincing result. Using the linear regression output, we can use statistical theory to (in-)validate the [hypotheses][Silver Spot Pricing Hypothesis] made in the previous section. For the _true_ value of $\beta$, we are interested whether $\beta^{_i} > 0$ and $\beta^{_r} < 0$. These one-sided Frequentist hypothesis tests are carried out below.
 
 ***Hypothesis Test for Inflation-Beta***
 
