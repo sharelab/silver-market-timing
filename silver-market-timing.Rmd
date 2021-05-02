@@ -97,7 +97,7 @@ All results are 100% reproducible. All data and code are available on my company
 
 The silver commodity (spot symbol: `^XAGUSD`) can be thought of in terms of a zero-coupon paying bond with an infinite time to maturity. Assuming cashing-out within finite time, we are interested in the asset's spot price at the end of the arbitrary holding period, $T$. 
 
-In most simplistic terms, any physical asset appreciates/depreciates in nominal value with inflation/deflation. It follows that the future silver spot price, $P_T$, is a function of the spot price at the beginning of the investment period, $P_0$, and USD inflation, $i$. In addition, there might be some $n$ other dependencies, which might be observable or not, and where it is not clear whether they have a positive or negative impact on $P_T$. These are included in the vector $X_n$, $X_n = [x_1, x_2,..., x_n]$.
+In most simplistic terms, any physical asset appreciates/depreciates in nominal value with inflation/deflation. It follows that the future silver spot price, $P_T$, is a function of the spot price at the beginning of the investment period, $P_0$, and USD inflation, $i$. In addition, there might be some $n$ other dependencies, which might be observable or not, and where it is unknown whether these have a positive or negative impact on $P_T$. These are included in the vector $X_n$, $X_n = [x_1, x_2,..., x_n]$.
 
 $$P_{T} = f(P_{0}, i, X_n)$$
 
@@ -129,9 +129,11 @@ Hence, we have established that,
 1. The silver spot price, $P_t$, _increases_ with rising USD inflation, $i$
 2. The silver spot price, $P_t$, _decreases_ with rising risk-free USD rates, $r$.
 
+\vspace{5 mm}
+
 ***A Word of Caution***
 
-Let's denote $s$ the _spread_ between USD inflation and the USD risk-free rate, $s = i - r$. It is _tempting_ to say, whenever the _change_ in the inflation-rate spread, $s$, is _positive_, P_t is increasing. In other words, whenever the change in inflation is greater than the change in the interest rate, the silver price, $P_t$ is rising:
+Let's denote $s$ the _spread_ between USD inflation and the USD risk-free rate, $s = i - r$. It is _tempting_ to say, whenever the _change_ in the inflation-rate spread, $s$, is _positive_, $P_t$ is increasing. In other words, whenever the change in inflation is greater than the change in the interest rate, the silver price, $P_t$ is rising:
 
 $$\Delta s >0 \implies \Delta P_t > 0$$
 
@@ -236,6 +238,8 @@ h0_beta_geq_zero[h0_beta_geq_zero=="0"] <- as.character("< 0.001")
 
 The linear regression model in (2) explains roughly 10% of the total variation in the Silver spot price return. In terms of regression in differences, this is a remarkably convincing result. Using the linear regression output, we can use statistical theory to (in-)validate the [hypotheses][Silver Spot Pricing Hypothesis] made in the previous section. For the _true_ value of $\beta$, we are interested whether $\beta^{_i} > 0$ and $\beta^{_r} < 0$. These one-sided Frequentist hypothesis tests are carried out below.
 
+\newpage
+
 ***Hypothesis Test for Inflation-Beta***
 
 \begin{align}
@@ -246,6 +250,8 @@ The linear regression model in (2) explains roughly 10% of the total variation i
 $$P[ \textrm{data} | \beta^{_i} \leq 0] = P[T_{\textrm{df=}`r result$df`} > `r round(coef[1,3],2)`] \mathbf{< 0.001}$$
 
 Given $H_0$ is true, the probability of observing this data (or more extreme) is $< 0.001$. Hence, we reject $H_0$ for _all common levels of statistical significance_ and accept that $\beta^{_i} > 0$.
+
+\vspace{5 mm}
 
 ***Hypothesis Test for Risk-Free Rate-Beta***
 
@@ -266,9 +272,11 @@ In summary, we found that;
 2. The silver price _decreases_ with rising 10Y US treasury rates. This is backed by strong statistical evidence.
 3. The silver price is estimated to be _twice as sensitive_ to changes in inflation than it is to changes in US treasury rates.
 
+\newpage
+
 # Construction of a Fair-Value Silver Indicator
 
-Using the regression results in the previous part, we can try to construct a silver fair value indicator. According to the linear regression model above, 
+Using the regression results from the previous part, we can try to construct a silver fair value indicator. According to the linear regression model above, 
 
 $$\widehat{\Delta P_t} = 0.2 \Delta i_t -0.1 \Delta r_t$$
 
@@ -289,6 +297,8 @@ The Silver Indicator, $I^S_t$, can be interpreted as the _fundamentally_ expecte
 * $I^S_t > 0$: The current silver spot price is _fundamentally undervalued_
 * $I^S_t < 0$: The current silver spot price is _fundamentally overvalued_
 * $I^S_t = 0$: The current silver spot price trades at fair value
+
+\vspace{5 mm}
 
 ***Limitations***
 
@@ -399,6 +409,8 @@ Observe that,
 2. Whenever $I^S_t$ diverges significantly away from zero, this indicates strong buy/sell signals, which in part materialize in subsequent `^XAG/USD` movements
 
 Hence, the $I^S_t$ indicator can be used to absorb and compare the information given by the most crucial macroeconomic variables versus the actual price changes.
+
+\newpage
 
 ## Silver Market Timing Using $I^S_t$
 
@@ -552,6 +564,8 @@ From January 2020 to November 2020, `BTC/USD` and `XAG/USD` shared similar price
 However, after October 2020, `BTC/USD` appreciated greatly without macroeconomic justification. More specifically, `BTC/USD` rose from USD 11,736 on 19 October 2020 to roughly USD 30,000 by the end of the year. On 12 April 2021, it reached more than USD 60,000. Simultaneously, the overall crypto currency market had an increase in market capitalization proportionally to the `BTC/USD` appreciation.
 
 **Opinion:** The risk for the silver commodity is that some of it's potential market capitalization for inflation-protection might be substituted for investment in cryptocurrency. Hence, further gain in acceptance and trust in cryptocurrency for the purpose of preserving value might, in part, drive away demand from the silver commodity market.
+
+\newpage
 
 # Conclusion
 
