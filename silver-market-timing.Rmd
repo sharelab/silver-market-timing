@@ -1,9 +1,9 @@
 ---
 title: |
-  | Silver Market Timing--
-  | A Macroeconomic Perspective
+  | Silver Commodity Market Timing--
+  | A Simple Macroeconomic Model
 author: "Author: [Christian Satzky, FRM](https://www.linkedin.com/in/christian-satzky/)"
-date: "Last update: `r ifelse(substr(format(Sys.time(), '%d'),1,1) == 0, substring(format(Sys.time(), '%d %B %Y'), 2), format(Sys.time(), '%d %B %Y'))`"
+date: "Last update: 2 May 2021"
 output:
   pdf_document:
     keep_tex: yes
@@ -91,7 +91,7 @@ The silver commodity is a long-established constituent of the precious metals ma
 
 In the following, I first present a simple, theoretical pricing model. Secondly, I am empirically investigating key properties of this model by using recent market data. From these findings, I finally construct a statistical fair-value indicator for the silver spot price. This indicator conveniently absorbs statistically significant macroeconomic information that is relevant to silver spot pricing.
 
-All results are 100% reproducible. All data and code are available on my company's [GitHub repo](https://github.com/sharelab/silver-market-timing).
+All results are fully reproducible. All data and code are available on [GitHub repo](https://github.com/sharelab/silver-market-timing).
 
 # Silver Spot Pricing Hypothesis
 
@@ -589,7 +589,7 @@ When it comes to silver market-timing, it can be concluded the following:
 * A _decrease_ in demand for silver as a resource for production
 * A continued _increase_ in trust and acceptance in cryptocurrency
 
-# Appendix: Zoomed Plots
+# Appendix: Zoomed Plots   {-}
 
 ```{r highlighted-plot2}
 # highlight regions
@@ -733,7 +733,7 @@ grid.draw(rbind(ggplotGrob(p1_hl), ggplotGrob(p2_hl), size = "last"))
 
 \newpage
 
-# Disclaimer
+# Disclaimer   {-}
 
 This article has been prepared and issued by Christian Satzky (CS).
 
