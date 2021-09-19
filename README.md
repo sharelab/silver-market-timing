@@ -1,4 +1,4 @@
-# Silver Commodity Market Timing-A Macroeconomic Indicator
+# Silver Commodity Market Timing-A Macroeconomic Perspective
 
 The files of interest in this repository are:
 
